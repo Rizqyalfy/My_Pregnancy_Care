@@ -16,21 +16,21 @@ class _EdukasiPageState extends State<EdukasiPage> {
       "fokus": "Adaptasi tubuh & nutrisi awal",
       "materi":
           "- Mual muntah, kelelahan\n- Pola makan sehat\n- Pentingnya asam folat",
-      "color": "0xFFD6EAF8", // biru muda
+      "color": "0xFFD6EAF8",
     },
     {
       "trimester": "Trimester II (13–28 minggu)",
       "fokus": "Pertumbuhan janin & kesejahteraan ibu",
       "materi":
           "- Senam hamil\n- Tanda bahaya kehamilan\n- Kesehatan gigi & mulut",
-      "color": "0xFFB3E5FC", // biru langit lembut
+      "color": "0xFFB3E5FC",
     },
     {
       "trimester": "Trimester III (29–40 minggu)",
       "fokus": "Persiapan persalinan & menyusui",
       "materi":
           "- Tanda persalinan\n- Perawatan payudara\n- Persiapan mental ibu",
-      "color": "0xFFFFF8E1", // krem lembut
+      "color": "0xFFFFF8E1",
     },
   ];
 
@@ -43,45 +43,43 @@ class _EdukasiPageState extends State<EdukasiPage> {
 
     return SafeArea(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(
-          10,
-        ), // Padding utama dikurangi dari 20 ke 10 untuk ukuran lebih kecil
+        padding: const EdgeInsets.all(12),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Judul halaman
+            // ============================
+            // JUDUL
+            // ============================
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   Icons.menu_book_rounded,
                   color: Colors.blue[600],
-                  size: 24, // Ukuran ikon dikurangi dari 30 ke 24
+                  size: 26,
                 ),
-                const SizedBox(width: 6), // Jarak dikurangi dari 8 ke 6
+                const SizedBox(width: 6),
                 Text(
                   "Edukasi Berdasarkan Trimester",
                   style: TextStyle(
-                    fontSize: 18, // Ukuran font dikurangi dari 22 ke 18
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.blue[800],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 20), // Jarak dikurangi dari 25 ke 20
-            // Dropdown untuk memilih trimester
+
+            const SizedBox(height: 20),
+
+            // ============================
+            // Dropdown Trimester
+            // ============================
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 4,
-              ), // Padding dikurangi
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(
-                  12,
-                ), // Radius dikurangi dari 14 ke 12
-                border: Border.all(color: Colors.blue.shade200, width: 2),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.blue.shade300, width: 2),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.blueAccent.withOpacity(0.1),
@@ -100,33 +98,32 @@ class _EdukasiPageState extends State<EdukasiPage> {
                       value: e["trimester"],
                       child: Text(
                         e["trimester"]!,
-                        style: const TextStyle(
-                          fontSize: 14,
-                        ), // Ukuran font dikurangi dari 15 ke 14
+                        style: const TextStyle(fontSize: 14),
                       ),
                     );
                   }).toList(),
-                  onChanged: (newValue) {
-                    setState(() {
-                      selectedTrimester = newValue!;
-                    });
+                  onChanged: (value) {
+                    setState(() => selectedTrimester = value!);
                   },
                 ),
               ),
             ),
 
-            const SizedBox(height: 20), // Jarak dikurangi dari 30 ke 20
-            // Kotak tabel edukasi dengan animasi
+            const SizedBox(height: 20),
+
+            // ============================
+            // TABEL EDUKASI
+            // ============================
             AnimatedContainer(
               duration: const Duration(milliseconds: 300),
-              padding: const EdgeInsets.all(
-                12,
-              ), // Padding dikurangi dari 16 ke 12
+              padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
                 color: Color(int.parse(selectedData["color"]!)),
-                borderRadius: BorderRadius.circular(
-                  12,
-                ), // Radius dikurangi dari 16 ke 12
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Colors.blue.shade700, // BORDER TEBAL
+                  width: 2.5,
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.blueAccent.withOpacity(0.15),
@@ -137,9 +134,9 @@ class _EdukasiPageState extends State<EdukasiPage> {
               ),
               child: Table(
                 border: TableBorder.all(
-                  color: Colors.blueGrey.shade200,
-                  width: 1.2,
-                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.blueGrey.shade300,
+                  width: 1.3,
+                  borderRadius: BorderRadius.circular(6),
                 ),
                 columnWidths: const {
                   0: FlexColumnWidth(2),
@@ -147,110 +144,62 @@ class _EdukasiPageState extends State<EdukasiPage> {
                   2: FlexColumnWidth(3),
                 },
                 children: [
-                  // Header tabel
+                  // HEADER TABEL
                   TableRow(
                     decoration: BoxDecoration(color: Colors.blue[100]),
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.all(
-                          8,
-                        ), // Padding dikurangi dari 10 ke 8
-                        child: Center(
-                          child: Text(
-                            "Trimester",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize:
-                                  14, // Ukuran font dikurangi dari 15 ke 14
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(
-                          8,
-                        ), // Padding dikurangi dari 10 ke 8
-                        child: Center(
-                          child: Text(
-                            "Fokus Edukasi",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize:
-                                  14, // Ukuran font dikurangi dari 15 ke 14
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(
-                          8,
-                        ), // Padding dikurangi dari 10 ke 8
-                        child: Center(
-                          child: Text(
-                            "Contoh Materi",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize:
-                                  14, // Ukuran font dikurangi dari 15 ke 14
-                            ),
-                          ),
-                        ),
-                      ),
+                    children: [
+                      _tableHeader("Trimester"),
+                      _tableHeader("Fokus Edukasi"),
+                      _tableHeader("Contoh Materi"),
                     ],
                   ),
 
-                  // Isi tabel
+                  // ISI TABEL
                   TableRow(
                     decoration: const BoxDecoration(color: Colors.white),
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(
-                          8,
-                        ), // Padding dikurangi dari 10 ke 8
-                        child: Text(
-                          selectedData["trimester"]!,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF2E5C9A),
-                            fontSize:
-                                14, // Ukuran font ditambahkan untuk konsistensi
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(
-                          8,
-                        ), // Padding dikurangi dari 10 ke 8
-                        child: Text(
-                          selectedData["fokus"]!,
-                          style: const TextStyle(
-                            color: Color(0xFF2E5C9A),
-                            height: 1.4,
-                            fontSize:
-                                14, // Ukuran font ditambahkan untuk konsistensi
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(
-                          8,
-                        ), // Padding dikurangi dari 10 ke 8
-                        child: Text(
-                          selectedData["materi"]!,
-                          style: const TextStyle(
-                            color: Color(0xFF2E5C9A),
-                            height: 1.4,
-                            fontSize:
-                                14, // Ukuran font ditambahkan untuk konsistensi
-                          ),
-                        ),
-                      ),
+                      _tableCell(selectedData["trimester"]!),
+                      _tableCell(selectedData["fokus"]!),
+                      _tableCell(selectedData["materi"]!),
                     ],
                   ),
                 ],
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  // ============================
+  // WIDGET HEADER TABLE
+  // ============================
+  Widget _tableHeader(String text) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Center(
+        child: Text(
+          text,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+        ),
+      ),
+    );
+  }
+
+  // ============================
+  // WIDGET CELL TABLE
+  // ============================
+  Widget _tableCell(String text) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Color(0xFF2E5C9A),
+          height: 1.4,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
