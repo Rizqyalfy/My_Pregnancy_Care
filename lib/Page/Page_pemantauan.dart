@@ -16,9 +16,9 @@ class DashboardPage extends StatelessWidget {
             _buildHeader(),
             const SizedBox(height: 25),
 
-            // ============================
+            // ===========================
             // DASHBOARD KEHAMILAN
-            // ============================
+            // ===========================
             _buildSectionTitle("Dashboard Kehamilan"),
             _buildInfoCard(
               title: "Informasi Kehamilan",
@@ -39,9 +39,9 @@ class DashboardPage extends StatelessWidget {
 
             const SizedBox(height: 25),
 
-            // ============================
+            // ===========================
             // INPUT DATA IBU
-            // ============================
+            // ===========================
             _buildSectionTitle("Input Data Harian / Mingguan"),
             InkWell(
               onTap: () {
@@ -70,9 +70,9 @@ class DashboardPage extends StatelessWidget {
 
             const SizedBox(height: 25),
 
-            // ============================
+            // ===========================
             // GRAFIK PERKEMBANGAN
-            // ============================
+            // ===========================
             _buildSectionTitle("Grafik Perkembangan"),
             _buildInfoCard(
               title: "Grafik Kondisi Ibu & Janin",
@@ -80,11 +80,11 @@ class DashboardPage extends StatelessWidget {
               color: Colors.deepPurple,
               children: [
                 _buildGraph("Perkembangan Berat Badan Ibu"),
-                const SizedBox(height: 12),
-                _buildGraph("Tinggi Fundus / Pertumbuhan Janin"),
-                const SizedBox(height: 12),
-                _buildGraph("Tekanan Darah & Keluhan"),
                 const SizedBox(height: 16),
+                _buildGraph("Tinggi Fundus / Pertumbuhan Janin"),
+                const SizedBox(height: 16),
+                _buildGraph("Tekanan Darah"),
+                const SizedBox(height: 18),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: const [
@@ -101,9 +101,9 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  // ========================================================
+  // =======================================================
   // HEADER
-  // ========================================================
+  // =======================================================
   Widget _buildHeader() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,9 +140,9 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  // ========================================================
+  // =======================================================
   // SECTION TITLE
-  // ========================================================
+  // =======================================================
   Widget _buildSectionTitle(String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
@@ -157,9 +157,9 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  // ========================================================
-  // CARD
-  // ========================================================
+  // =======================================================
+  // CARD WRAPPER
+  // =======================================================
   Widget _buildInfoCard({
     required String title,
     required IconData icon,
@@ -203,9 +203,9 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  // ========================================================
-  // ROW
-  // ========================================================
+  // =======================================================
+  // ROW LABEL
+  // =======================================================
   Widget _buildRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0),
@@ -225,17 +225,22 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  // ========================================================
-  // GRAFIK (Line Chart) — FL_CHART
-  // ========================================================
+  // =======================================================
+  // GRAFIK DENGAN BACKGROUND TRANSPARAN
+  // =======================================================
   Widget _buildGraph(String title) {
-    List<FlSpot> dummyData = const [
-      FlSpot(0, 50),
-      FlSpot(1, 55),
-      FlSpot(2, 58),
-      FlSpot(3, 60),
-      FlSpot(4, 62),
-    ];
+    List<double> data = [110, 118, 125, 138, 145];
+
+    List<FlSpot> spots = [];
+    for (int i = 0; i < data.length; i++) {
+      spots.add(FlSpot(i.toDouble(), data[i]));
+    }
+
+    Color getColor(double v) {
+      if (v <= 120) return Colors.green;
+      if (v <= 139) return Colors.yellow;
+      return Colors.red;
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -245,23 +250,63 @@ class DashboardPage extends StatelessWidget {
           style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 8),
+
         Container(
-          height: 150,
-          padding: const EdgeInsets.all(12),
+          height: 200,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Colors.transparent, // Background transparan
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.blueGrey.shade200),
+            border: Border.all(color: Colors.blueGrey.shade400, width: 1.2),
           ),
+          padding: const EdgeInsets.all(12),
+
           child: LineChart(
             LineChartData(
               minX: 0,
               maxX: 4,
-              minY: 40,
-              maxY: 70,
-              gridData: FlGridData(show: true),
-              borderData: FlBorderData(show: true),
+              minY: 90,
+              maxY: 160,
+
+              // Background grafik transparan (tidak ada zona warna)
+              backgroundColor: Colors.transparent,
+
+              gridData: FlGridData(
+                show: true,
+                drawVerticalLine: true,
+                horizontalInterval: 10,
+                verticalInterval: 1,
+                getDrawingHorizontalLine: (value) {
+                  return FlLine(
+                    color: Colors.grey.withOpacity(0.3),
+                    strokeWidth: 1,
+                  );
+                },
+                getDrawingVerticalLine: (value) {
+                  return FlLine(
+                    color: Colors.grey.withOpacity(0.3),
+                    strokeWidth: 1,
+                  );
+                },
+              ),
+
+              borderData: FlBorderData(
+                show: true,
+                border: Border.all(color: Colors.grey.shade600, width: 1),
+              ),
+
               titlesData: FlTitlesData(
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    interval: 20,
+                    getTitlesWidget: (value, meta) {
+                      return Text(
+                        value.toInt().toString(),
+                        style: const TextStyle(fontSize: 10),
+                      );
+                    },
+                  ),
+                ),
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
@@ -272,14 +317,33 @@ class DashboardPage extends StatelessWidget {
                     ),
                   ),
                 ),
+                rightTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                topTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
               ),
+
               lineBarsData: [
                 LineChartBarData(
-                  spots: dummyData,
+                  spots: spots,
                   isCurved: true,
-                  color: Colors.blue,
                   barWidth: 3,
-                  dotData: const FlDotData(show: true),
+                  color: Colors.blue,
+                  dotData: FlDotData(
+                    show: true,
+                    getDotPainter: (s, _, __, index) => FlDotCirclePainter(
+                      radius: 5,
+                      color: getColor(data[index]),
+                      strokeWidth: 1,
+                      strokeColor: Colors.black26,
+                    ),
+                  ),
+                  belowBarData: BarAreaData(
+                    show: true,
+                    color: Colors.blue.withOpacity(0.15),
+                  ),
                 ),
               ],
             ),
