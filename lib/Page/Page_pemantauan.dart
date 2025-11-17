@@ -16,14 +16,14 @@ class DashboardPage extends StatelessWidget {
             _buildHeader(),
             const SizedBox(height: 25),
 
-            // ===========================
+            // ======================================
             // DASHBOARD KEHAMILAN
-            // ===========================
+            // ======================================
             _buildSectionTitle("Dashboard Kehamilan"),
             _buildInfoCard(
               title: "Informasi Kehamilan",
               icon: Icons.pregnant_woman,
-              color: Colors.blueAccent,
+              color: const Color(0xFF4A90E2),
               children: [
                 _buildRow("Usia Kehamilan", "24 minggu (Trimester II)"),
                 _buildRow("Tekanan Darah", "110/80 mmHg"),
@@ -39,9 +39,9 @@ class DashboardPage extends StatelessWidget {
 
             const SizedBox(height: 25),
 
-            // ===========================
+            // ======================================
             // INPUT DATA IBU
-            // ===========================
+            // ======================================
             _buildSectionTitle("Input Data Harian / Mingguan"),
             InkWell(
               onTap: () {
@@ -70,9 +70,9 @@ class DashboardPage extends StatelessWidget {
 
             const SizedBox(height: 25),
 
-            // ===========================
+            // ======================================
             // GRAFIK PERKEMBANGAN
-            // ===========================
+            // ======================================
             _buildSectionTitle("Grafik Perkembangan"),
             _buildInfoCard(
               title: "Grafik Kondisi Ibu & Janin",
@@ -226,15 +226,15 @@ class DashboardPage extends StatelessWidget {
   }
 
   // =======================================================
-  // GRAFIK DENGAN BACKGROUND TRANSPARAN
+  // GRAFIK (TRANSPARANT BACKGROUND)
   // =======================================================
   Widget _buildGraph(String title) {
     List<double> data = [110, 118, 125, 138, 145];
 
-    List<FlSpot> spots = [];
-    for (int i = 0; i < data.length; i++) {
-      spots.add(FlSpot(i.toDouble(), data[i]));
-    }
+    List<FlSpot> spots = List.generate(
+      data.length,
+      (i) => FlSpot(i.toDouble(), data[i]),
+    );
 
     Color getColor(double v) {
       if (v <= 120) return Colors.green;
@@ -254,7 +254,7 @@ class DashboardPage extends StatelessWidget {
         Container(
           height: 200,
           decoration: BoxDecoration(
-            color: Colors.transparent, // Background transparan
+            color: Colors.transparent, // transparan
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: Colors.blueGrey.shade400, width: 1.2),
           ),
@@ -267,26 +267,21 @@ class DashboardPage extends StatelessWidget {
               minY: 90,
               maxY: 160,
 
-              // Background grafik transparan (tidak ada zona warna)
-              backgroundColor: Colors.transparent,
+              backgroundColor: Colors.transparent, // tetap transparan
 
               gridData: FlGridData(
                 show: true,
                 drawVerticalLine: true,
                 horizontalInterval: 10,
                 verticalInterval: 1,
-                getDrawingHorizontalLine: (value) {
-                  return FlLine(
-                    color: Colors.grey.withOpacity(0.3),
-                    strokeWidth: 1,
-                  );
-                },
-                getDrawingVerticalLine: (value) {
-                  return FlLine(
-                    color: Colors.grey.withOpacity(0.3),
-                    strokeWidth: 1,
-                  );
-                },
+                getDrawingHorizontalLine: (value) => FlLine(
+                  color: Colors.grey.withOpacity(0.25),
+                  strokeWidth: 1,
+                ),
+                getDrawingVerticalLine: (value) => FlLine(
+                  color: Colors.grey.withOpacity(0.25),
+                  strokeWidth: 1,
+                ),
               ),
 
               borderData: FlBorderData(
@@ -299,12 +294,10 @@ class DashboardPage extends StatelessWidget {
                   sideTitles: SideTitles(
                     showTitles: true,
                     interval: 20,
-                    getTitlesWidget: (value, meta) {
-                      return Text(
-                        value.toInt().toString(),
-                        style: const TextStyle(fontSize: 10),
-                      );
-                    },
+                    getTitlesWidget: (value, meta) => Text(
+                      value.toInt().toString(),
+                      style: const TextStyle(fontSize: 10),
+                    ),
                   ),
                 ),
                 bottomTitles: AxisTitles(
@@ -333,17 +326,16 @@ class DashboardPage extends StatelessWidget {
                   color: Colors.blue,
                   dotData: FlDotData(
                     show: true,
-                    getDotPainter: (s, _, __, index) => FlDotCirclePainter(
+                    getDotPainter: (spot, _, __, index) => FlDotCirclePainter(
                       radius: 5,
-                      color: getColor(data[index]),
+                      color: getColor(data[index]), // indikator warna
                       strokeWidth: 1,
                       strokeColor: Colors.black26,
                     ),
                   ),
                   belowBarData: BarAreaData(
-                    show: true,
-                    color: Colors.blue.withOpacity(0.15),
-                  ),
+                    show: false,
+                  ), // tidak ada background fill
                 ),
               ],
             ),
